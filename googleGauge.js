@@ -5,7 +5,6 @@ class GoogleGaugeWidget extends HTMLElement {
     this._value = 0;
   }
 
-  // SAC property change listener
   onCustomWidgetBeforeUpdate(changedProps) {
     if (changedProps.value !== undefined) {
       this._value = changedProps.value;
@@ -21,7 +20,7 @@ class GoogleGaugeWidget extends HTMLElement {
   }
 
   render() {
-    const value = this._value || 0;
+    const value = Number(this._value) || 0;
 
     let status = "HIGH";
     let color = "green";
@@ -45,7 +44,7 @@ class GoogleGaugeWidget extends HTMLElement {
         align-items:center;
         justify-content:center;
         font-family:Arial;">
-        <div style="font-size:32px;">${value}%</div>
+        <div style="font-size:32px;">${value}</div>
         <div style="font-size:16px;color:${color};">${status}</div>
       </div>
     `;
