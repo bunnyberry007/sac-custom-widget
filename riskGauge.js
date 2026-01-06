@@ -2,7 +2,7 @@ class RiskGaugeWidget extends HTMLElement {
 
   constructor() {
     super();
-    this._value = 0;
+    this._value = 55;
   }
 
   onCustomWidgetBeforeUpdate(changedProps) {
