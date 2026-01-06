@@ -1,7 +1,27 @@
 class GoogleGaugeWidget extends HTMLElement {
 
+  constructor() {
+    super();
+    this._value = 0;
+  }
+
+  // SAC property change listener
+  onCustomWidgetBeforeUpdate(changedProps) {
+    if (changedProps.value !== undefined) {
+      this._value = changedProps.value;
+    }
+  }
+
+  onCustomWidgetAfterUpdate() {
+    this.render();
+  }
+
   connectedCallback() {
-    const value = 20; // test value
+    this.render();
+  }
+
+  render() {
+    const value = this._value || 0;
 
     let status = "HIGH";
     let color = "green";
