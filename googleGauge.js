@@ -1,4 +1,4 @@
-class GoogleGaugeWidget extends HTMLElement {
+class RiskGaugeWidget extends HTMLElement {
 
   constructor() {
     super();
@@ -7,7 +7,7 @@ class GoogleGaugeWidget extends HTMLElement {
 
   onCustomWidgetBeforeUpdate(changedProps) {
     if (changedProps.value !== undefined) {
-      this._value = changedProps.value;
+      this._value = Number(changedProps.value);
     }
   }
 
@@ -20,35 +20,49 @@ class GoogleGaugeWidget extends HTMLElement {
   }
 
   render() {
-    const value = Number(this._value) || 0;
+    const value = Math.max(0, Math.min(100, this._value));
 
-    let status = "HIGH";
-    let color = "green";
+    let risk = "LOW";
+    let color = "#2e7d32"; // green
 
-    if (value < 50) {
-      status = "LOW";
-      color = "red";
-    } else if (value < 80) {
-      status = "MEDIUM";
-      color = "orange";
+    if (value >= 70) {
+      risk = "HIGH";
+      color = "#c62828"; // red
+    } else if (value >= 40) {
+      risk = "MEDIUM";
+      color = "#f9a825"; // yellow
     }
 
     this.innerHTML = `
-      <div style="
-        width:160px;
-        height:160px;
-        border-radius:50%;
-        border:8px solid ${color};
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        font-family:Arial;">
-        <div style="font-size:32px;">${value}</div>
-        <div style="font-size:16px;color:${color};">${status}</div>
+      <div style="width:220px;text-align:center;font-family:Arial;">
+        
+        <svg width="220" height="120" viewBox="0 0 220 120">
+          
+          <!-- background arc -->
+          <path d="M20 100 A90 90 0 0 1 200 100"
+                fill="none"
+                stroke="#e0e0e0"
+                stroke-width="18"/>
+
+          <!-- value arc -->
+          <path d="M20 100 A90 90 0 0 1 200 100"
+                fill="none"
+                stroke="${color}"
+                stroke-width="18"
+                stroke-dasharray="${value * 2.83} 999"/>
+
+        </svg>
+
+        <div style="margin-top:-20px;">
+          <div style="font-size:32px;font-weight:bold;">${value}</div>
+          <div style="font-size:14px;color:${color};">
+            ${risk} RISK
+          </div>
+        </div>
+
       </div>
     `;
   }
 }
 
-customElements.define("google-gauge-widget", GoogleGaugeWidget);
+customElements.define("risk-gauge-widget", RiskGaugeWidget);
