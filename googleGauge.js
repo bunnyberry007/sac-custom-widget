@@ -1,7 +1,7 @@
 class GoogleGaugeWidget extends HTMLElement {
 
   connectedCallback() {
-    const value = 72; // test value
+    const value = 20; // test value
 
     let status = "HIGH";
     let color = "green";
